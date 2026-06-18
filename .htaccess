@@ -1,0 +1,42 @@
+# ============================================================
+# Zhe Ren portfolio — Apache config for HostGator (public_html)
+# ============================================================
+
+Options +FollowSymLinks -Indexes
+DirectoryIndex index.html
+
+# ---- Force HTTPS + non-www (adjust if you prefer www) ----
+RewriteEngine On
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+# ---- 301 redirects: old WordPress URLs -> new clean URLs ----
+Redirect 301 /about-artist/                      /about/
+Redirect 301 /splash/                            /work/splash/
+Redirect 301 /men-made-landscape-by-joe-ren/     /work/man-made-landscape/
+Redirect 301 /perspective-duality-by-joe-ren/    /work/perspective-of-duality/
+Redirect 301 /students-work/                     /work/students-work/
+Redirect 301 /contact-me/                        /contact/
+Redirect 301 /art-work/                          /work/
+Redirect 301 /research-activities/               /cv/
+
+# ---- Custom error page ----
+ErrorDocument 404 /404.html
+
+# ---- Caching for static assets ----
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png  "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/css   "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/pdf "access plus 1 month"
+</IfModule>
+
+# ---- Compression ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml
+</IfModule>
