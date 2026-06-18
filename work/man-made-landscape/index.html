@@ -102,6 +102,7 @@
     document.getElementById("yr").textContent = new Date().getFullYear();
     (function () {
       var videos = [
+        { type: "file", src: "../../assets/video/inception.mp4", title: "Inception" },
         { type: "vimeo", id: "755239776", hash: "ecd0987032", title: "Among the Man-Made — featured video", poster: "../../images/thumb/video-vimeo-755239776.jpg" },
         { type: "vimeo", id: "394975799", title: "Among the Man-Made (video)", poster: "../../images/thumb/video-vimeo-394975799.jpg" },
         { type: "vimeo", id: "758097539", hash: "4d3fe24a5b", title: "In and Out — interactive virtual environment", poster: "../../images/thumb/man-made-landscape-in-and-out-game.jpg" },
@@ -119,6 +120,12 @@
       ];
       var play = '<span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>';
       var html = videos.map(function (v) {
+        if (v.type === "file") {
+          return '<div><video class="video-file" controls preload="metadata"' +
+                 (v.poster ? ' poster="' + v.poster + '"' : '') +
+                 ' src="' + v.src + '"></video>' +
+                 '<p class="video-label">' + v.title + '</p></div>';
+        }
         var embed = v.type === "vimeo"
           ? "https://player.vimeo.com/video/" + v.id + (v.hash ? "?h=" + v.hash : "")
           : "https://www.youtube.com/embed/" + v.id + "?rel=0";
